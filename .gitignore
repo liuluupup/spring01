@@ -1,6 +1,8 @@
 # Compiled class file
 *.class
-
+*.lock
+bin/
+build/
 # Log file
 *.log
 
