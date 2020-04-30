@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Comment {
 private String content;
 private String author;
+private int Star;
 @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 private LocalDateTime dt = LocalDateTime.now();
 
@@ -67,4 +68,12 @@ public boolean equals(Object obj) {
 public String toString() {
 	return "Comment [content=" + content + ", author=" + author + ", dt=" + dt + "]";
 }
+public int getStar() {
+	return Star;
+}
+public void setStar(int star) {
+	Star = star;
+}
+
+
 }

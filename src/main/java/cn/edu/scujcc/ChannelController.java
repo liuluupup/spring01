@@ -84,5 +84,24 @@ public class ChannelController {
 	public List<Channel> getHotChannels(){
 		return service.getLatestCommentsChannel();
 	}
+	/*
+	 * 新增评论 
+	 * channelId 被评论的评论编号
+	 * comment 将要更新的评论对象
+	 * */
+	@PostMapping("/{channelId}/comment")
+	public Channel addComment(@PathVariable String channelId,@RequestBody Comment comment) {
+		logger.debug("将为频道"+channelId+"新增一条评论："+comment);
+		return service.addComment(channelId, comment);
+	}
+	/*
+	 * 获取指定频道的热门评论
+	 * 
+	 * */
+	@GetMapping("/{channelId}/hotcomments")
+	public List<Comment> hotComments(@PathVariable String channelId){
+		logger.debug("将获取频道"+channelId+"的热门评论");
+		return service.hotComments(channelId);
+	}
 }
 

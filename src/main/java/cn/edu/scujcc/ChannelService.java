@@ -2,6 +2,7 @@ package cn.edu.scujcc;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,6 +65,9 @@ public class ChannelService {
         	 saved.setComments(c.getComments());
          }
 	 }
+	 if(c.getCover()!=null) {
+		 saved.setCover(c.getCover());
+	 }
 	 return repo.save(saved);
  }
  /*
@@ -87,5 +91,45 @@ public List<Channel> getLatestCommentsChannel(){
 	LocalDateTime now =LocalDateTime.now();
 	LocalDateTime today =LocalDateTime.of(now.getYear(),now.getMonthValue(),now.getDayOfMonth(),0,0);
 	return repo.findByCommentsDtAfter(today);
+}
+/*
+ * 向指定的频道增加一条评论
+ * channelId 评论的频道编号
+ * Comment  将要更新的评论对象
+ * */
+public Channel addComment(String channelId,Comment comment) {
+	Channel saved = getChannel(channelId);
+	if(saved != null) {
+		saved.addComment(comment);
+		return repo.save(saved);
+	}
+	return null;
+}
+public List<Comment> hotComments(String channelId){
+	List<Comment> result = new ArrayList<>();
+	Channel saved = getChannel(channelId);
+	if(saved != null && saved.getComments()!=null) {
+		//根据评论的star进行排序
+		saved.getComments().sort(new Comparator<Comment>() {
+			@Override
+			public int compare(Comment o1, Comment o2) {
+				if(o1.getStar() == o2.getStar()) {
+					return 0;
+				}else if(o1.getStar() < o2.getStar()) {
+				return 1;
+			}else {
+				return -1;
+			}
+			}
+		});
+		if(saved.getComments().size()>3) {
+			result = saved.getComments().subList(0, 3);
+		}else {
+			result = saved.getComments();
+		}
+	}
+	
+	return result;
+	
 }
 }
