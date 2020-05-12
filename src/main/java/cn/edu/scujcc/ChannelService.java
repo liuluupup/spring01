@@ -6,17 +6,23 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 @Service
 public class ChannelService {
 	@Autowired
 	private ChannelRepository repo;
+	private static final Logger logger = LoggerFactory.getLogger(ChannelService.class);
  
  /*
   * 获取所有频道
   * */
+	@Cacheable("channels")
  public List<Channel> getAllChannels(){
+	 logger.debug("准备从数据库读取所有频道信息...");
 	 return repo.findAll();
  }
  
@@ -25,7 +31,9 @@ public class ChannelService {
   * @param id
   * @return
   * */
+	@Cacheable("channels")
  public Channel getChannel(String channelId) {
+		logger.debug("准备从数据库读取频道"+channelId);
 	Optional<Channel> result=repo.findById(channelId);
 	if(result.isPresent()) {
 		return result.get();
@@ -113,9 +121,9 @@ public List<Comment> hotComments(String channelId){
 		saved.getComments().sort(new Comparator<Comment>() {
 			@Override
 			public int compare(Comment o1, Comment o2) {
-				if(o1.getStar() == o2.getStar()) {
+				if(o1.getStar()==o2.getStar()) {
 					return 0;
-				}else if(o1.getStar() < o2.getStar()) {
+				}else if(o1.getStar()<o2.getStar()) {
 				return 1;
 			}else {
 				return -1;
@@ -128,7 +136,6 @@ public List<Comment> hotComments(String channelId){
 			result = saved.getComments();
 		}
 	}
-	
 	return result;
 	
 }

@@ -1,11 +1,17 @@
 package cn.edu.scujcc;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+ 
 
-public class Channel {
+public class Channel implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 636245495159011054L;
 	@Id
 	private String id;
 	@Override

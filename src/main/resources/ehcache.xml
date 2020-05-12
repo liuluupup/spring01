@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlbs:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation = "ehcache.xsd" updateCheck = "true"
+	monitoring="autodetect" dynamicConfig="true">
+	
+	<diskStore path="java.io.tmpdir"/>
+	
+	<cache name="channels" maxEntriesLocalHeap="1000"
+		maxEntriesLocalDisk="2000" eternal="false" diskSpoolBufferSizeMB="20"
+		timeToIdleSeconds="60" timeToLiveSeconds="36000"
+		memoryStoreEvictionPolicy="LFU" transactionalMode="off">
+		<persistence strategy="localTempSwap"/>	
+	</cache>
+</ehcache>
